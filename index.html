@@ -1,0 +1,2051 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Takik Tambang Perubahan Materi</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:linear-gradient(135deg,#eaf8ff,#f4fff7);
+    color:#183b56;
+    min-height:100vh;
+}
+
+button,input{
+    font-family:inherit;
+}
+
+button{
+    cursor:pointer;
+}
+
+.container{
+    width:min(1050px,94%);
+    margin:auto;
+}
+
+header{
+    background:linear-gradient(135deg,#087f8c,#0b9b72);
+    color:white;
+    padding:15px 0;
+    box-shadow:0 4px 15px rgba(0,0,0,.15);
+}
+
+.header-flex{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+}
+
+.logo{
+    font-weight:bold;
+    font-size:20px;
+}
+
+.top-score{
+    background:rgba(255,255,255,.2);
+    padding:10px 18px;
+    border-radius:25px;
+    font-weight:bold;
+}
+
+.page{
+    display:none;
+    padding:30px 0 50px;
+}
+
+.page.active{
+    display:block;
+}
+
+.hero{
+    text-align:center;
+    padding:35px 10px;
+}
+
+.hero-icon{
+    font-size:75px;
+}
+
+.hero h1{
+    font-size:clamp(32px,7vw,60px);
+    color:#087f8c;
+    margin:15px 0 8px;
+}
+
+.subtitle{
+    font-size:19px;
+    color:#587180;
+    margin-bottom:25px;
+}
+
+.name-input{
+    width:min(450px,100%);
+    padding:15px;
+    border:2px solid #cfe5e9;
+    border-radius:14px;
+    font-size:16px;
+    margin-bottom:15px;
+    outline:none;
+}
+
+.name-input:focus{
+    border-color:#087f8c;
+}
+
+.card{
+    background:white;
+    border-radius:22px;
+    padding:25px;
+    margin-bottom:20px;
+    box-shadow:0 7px 25px rgba(15,75,90,.11);
+    border:1px solid #dceff2;
+}
+
+.card h2{
+    color:#087f8c;
+    margin-bottom:15px;
+}
+
+.btn{
+    border:0;
+    padding:13px 22px;
+    border-radius:13px;
+    font-size:16px;
+    font-weight:bold;
+    margin:5px;
+    transition:.2s;
+}
+
+.btn:hover{
+    transform:translateY(-2px);
+}
+
+.btn-primary{
+    background:#087f8c;
+    color:white;
+}
+
+.btn-green{
+    background:#0b9b72;
+    color:white;
+}
+
+.btn-orange{
+    background:#f28c28;
+    color:white;
+}
+
+.btn-light{
+    background:#e8f6f8;
+    color:#087f8c;
+}
+
+.btn-red{
+    background:#d9534f;
+    color:white;
+}
+
+.center{
+    text-align:center;
+}
+
+.rules{
+    list-style:none;
+    line-height:2;
+}
+
+.rules li:before{
+    content:"✅ ";
+}
+
+/* MATERIAL */
+
+.material-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+}
+
+.material-box{
+    padding:22px;
+    border-radius:18px;
+    line-height:1.6;
+}
+
+.fisika-box{
+    background:#e9f7ff;
+    border-left:7px solid #168aad;
+}
+
+.kimia-box{
+    background:#fff2e4;
+    border-left:7px solid #f28c28;
+}
+
+.material-box ul{
+    margin:10px 0 0 20px;
+}
+
+/* ARENA */
+
+.arena-header{
+    text-align:center;
+}
+
+.round{
+    display:inline-block;
+    background:#e7f6f8;
+    color:#087f8c;
+    padding:8px 18px;
+    border-radius:20px;
+    font-weight:bold;
+    margin:10px;
+}
+
+.team-names{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+    margin:20px 0;
+}
+
+.team{
+    padding:15px;
+    border-radius:15px;
+    font-weight:bold;
+    font-size:18px;
+}
+
+.team-fisika{
+    background:#e5f5ff;
+    color:#0876a0;
+}
+
+.team-kimia{
+    background:#fff0df;
+    color:#d66b00;
+}
+
+/* TARIK TAMBANG */
+
+.tug-area{
+    position:relative;
+    margin:30px 0;
+    padding:20px 0;
+    overflow:hidden;
+}
+
+.players{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-size:42px;
+    position:relative;
+    z-index:3;
+}
+
+.player-left,
+.player-right{
+    display:flex;
+    gap:3px;
+    align-items:center;
+}
+
+.rope-wrapper{
+    position:relative;
+    height:65px;
+    margin-top:-48px;
+}
+
+.rope{
+    position:absolute;
+    top:30px;
+    left:8%;
+    width:84%;
+    height:13px;
+    background:#a87543;
+    border-radius:10px;
+    box-shadow:0 3px 4px rgba(0,0,0,.2);
+    transition:transform .6s cubic-bezier(.2,.8,.2,1);
+}
+
+.rope:before,
+.rope:after{
+    content:"";
+    position:absolute;
+    top:-5px;
+    width:22px;
+    height:23px;
+    background:#8c5e34;
+    border-radius:50%;
+}
+
+.rope:before{
+    left:-5px;
+}
+
+.rope:after{
+    right:-5px;
+}
+
+.flag{
+    position:absolute;
+    top:-18px;
+    left:50%;
+    transform:translateX(-50%);
+    font-size:40px;
+    z-index:5;
+    transition:left .6s cubic-bezier(.2,.8,.2,1);
+}
+
+.win-line{
+    position:absolute;
+    top:5px;
+    height:55px;
+    width:5px;
+    border-radius:5px;
+}
+
+.win-left{
+    left:5%;
+    background:#168aad;
+}
+
+.win-right{
+    right:5%;
+    background:#f28c28;
+}
+
+.rope-label{
+    display:flex;
+    justify-content:space-between;
+    font-weight:bold;
+    font-size:14px;
+}
+
+/* QUESTION */
+
+.progress-bg{
+    height:14px;
+    background:#dcecef;
+    border-radius:20px;
+    overflow:hidden;
+    margin:15px 0 25px;
+}
+
+.progress-bar{
+    height:100%;
+    width:0;
+    background:linear-gradient(90deg,#087f8c,#0b9b72);
+    transition:.4s;
+}
+
+.question{
+    font-size:21px;
+    font-weight:bold;
+    line-height:1.5;
+    margin-bottom:20px;
+}
+
+.option{
+    display:block;
+    width:100%;
+    text-align:left;
+    padding:15px;
+    margin:8px 0;
+    border-radius:13px;
+    border:2px solid #d8e9ec;
+    background:white;
+    font-size:16px;
+    transition:.2s;
+}
+
+.option:hover:not(:disabled){
+    border-color:#087f8c;
+    background:#f1fbfc;
+}
+
+.option.correct{
+    background:#dcf7e8;
+    border-color:#1b9a5c;
+}
+
+.option.wrong{
+    background:#ffe3e3;
+    border-color:#d9534f;
+}
+
+.option:disabled{
+    cursor:default;
+}
+
+.feedback{
+    display:none;
+    padding:15px;
+    border-radius:13px;
+    line-height:1.5;
+    margin-top:15px;
+}
+
+.feedback.show{
+    display:block;
+}
+
+.feedback.good{
+    background:#dcf7e8;
+    color:#16643d;
+}
+
+.feedback.bad{
+    background:#ffe3e3;
+    color:#8a2222;
+}
+
+.next{
+    display:none;
+    margin-top:15px;
+}
+
+/* BONUS */
+
+.bonus-title{
+    text-align:center;
+    font-size:35px;
+    color:#f28c28;
+    margin-bottom:10px;
+}
+
+/* RESULT */
+
+.result{
+    text-align:center;
+}
+
+.trophy{
+    font-size:80px;
+}
+
+.final-score{
+    font-size:65px;
+    color:#087f8c;
+    font-weight:bold;
+    margin:20px;
+}
+
+.result-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+    margin:20px 0;
+}
+
+.result-box{
+    background:#f1fafb;
+    padding:18px;
+    border-radius:15px;
+}
+
+.result-box strong{
+    display:block;
+    font-size:28px;
+    color:#0b9b72;
+    margin-bottom:5px;
+}
+
+.winner{
+    font-size:24px;
+    font-weight:bold;
+    padding:18px;
+    border-radius:15px;
+    margin:20px 0;
+}
+
+.winner-fisika{
+    background:#e6f6ff;
+    color:#0876a0;
+}
+
+.winner-kimia{
+    background:#fff0df;
+    color:#d66b00;
+}
+
+.winner-draw{
+    background:#eef0f2;
+    color:#59636b;
+}
+
+/* POPUP */
+
+.feedback-pop{
+    position:fixed;
+    left:50%;
+    top:50%;
+    transform:translate(-50%,-50%) scale(.8);
+    background:white;
+    padding:30px;
+    border-radius:22px;
+    box-shadow:0 15px 50px rgba(0,0,0,.25);
+    text-align:center;
+    z-index:100;
+    opacity:0;
+    pointer-events:none;
+    transition:.25s;
+    width:min(420px,90%);
+}
+
+.feedback-pop.show{
+    opacity:1;
+    transform:translate(-50%,-50%) scale(1);
+}
+
+.pop-icon{
+    font-size:60px;
+    margin-bottom:10px;
+}
+
+@media(max-width:700px){
+
+    .header-flex{
+        flex-direction:column;
+    }
+
+    .material-grid{
+        grid-template-columns:1fr;
+    }
+
+    .team-names{
+        grid-template-columns:1fr;
+    }
+
+    .players{
+        font-size:28px;
+    }
+
+    .result-grid{
+        grid-template-columns:1fr;
+    }
+
+    .card{
+        padding:18px;
+    }
+
+    .hero{
+        padding:20px 5px;
+    }
+
+    .question{
+        font-size:18px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="container header-flex">
+        <div class="logo">
+            🔬 TAKIK TAMBANG PERUBAHAN MATERI
+        </div>
+
+        <div class="top-score">
+            ⭐ Skor: <span id="topScore">0</span>
+        </div>
+    </div>
+</header>
+
+<main class="container">
+
+<!-- =========================
+     BERANDA
+========================= -->
+
+<section id="home" class="page active">
+
+    <div class="hero">
+
+        <div class="hero-icon">
+            🧪🔬🪢
+        </div>
+
+        <h1>
+            TAKIK TAMBANG<br>
+            PERUBAHAN MATERI
+        </h1>
+
+        <div class="subtitle">
+            Tarik Tali, Jawab Kuis, dan Menangkan Pertandingan!
+        </div>
+
+        <input
+            id="playerName"
+            class="name-input"
+            type="text"
+            maxlength="30"
+            placeholder="Masukkan nama pemain"
+        >
+
+        <br>
+
+        <button
+            class="btn btn-primary"
+            onclick="startGame()">
+            ▶ MULAI PERMAINAN
+        </button>
+
+        <button
+            class="btn btn-light"
+            onclick="showPage('material')">
+            📖 PELAJARI MATERI
+        </button>
+
+        <button
+            class="btn btn-orange"
+            onclick="showResult()">
+            🏆 HASIL PERMAINAN
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     CARA BERMAIN
+========================= -->
+
+<section id="instructions" class="page">
+
+    <div class="card">
+
+        <h2>🎮 CARA BERMAIN</h2>
+
+        <ul class="rules">
+
+            <li>Baca pertanyaan dengan teliti.</li>
+
+            <li>Pilih salah satu jawaban A, B, C, atau D.</li>
+
+            <li>Jika jawaban benar, kamu mendapatkan 10 poin.</li>
+
+            <li>Jawaban benar akan membuat tali bergerak.</li>
+
+            <li>Jawaban salah tidak mengurangi skor.</li>
+
+            <li>Setelah 10 soal terdapat Ronde Bonus.</li>
+
+            <li>Jawaban benar di Ronde Bonus bernilai 20 poin.</li>
+
+            <li>Tim yang menarik tali paling jauh menjadi pemenang.</li>
+
+        </ul>
+
+        <div class="center">
+
+            <div style="font-size:45px;margin:25px 0;">
+                🔵 💪👨‍🔬
+                ← 🪢 →
+                👩‍🔬💪 🟠
+            </div>
+
+            <button
+                class="btn btn-green"
+                onclick="startArena()">
+                🚩 MULAI PERTANDINGAN
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     MATERI
+========================= -->
+
+<section id="material" class="page">
+
+    <div class="card">
+
+        <h2>📖 MATERI SINGKAT</h2>
+
+        <p style="line-height:1.7;">
+            Materi dapat mengalami perubahan. Berdasarkan apakah
+            terbentuk zat baru atau tidak, perubahan materi dapat
+            dibedakan menjadi perubahan fisika dan perubahan kimia.
+        </p>
+
+    </div>
+
+
+    <div class="material-grid">
+
+        <div class="material-box fisika-box">
+
+            <h2>🔵 PERUBAHAN FISIKA</h2>
+
+            <p>
+                Perubahan fisika adalah perubahan materi yang
+                <strong>tidak menghasilkan zat baru.</strong>
+            </p>
+
+            <br>
+
+            <strong>Contoh:</strong>
+
+            <ul>
+                <li>🧊 Es mencair</li>
+                <li>💧 Air membeku</li>
+                <li>📄 Kertas dipotong</li>
+                <li>🕯️ Lilin meleleh</li>
+                <li>💨 Air menguap</li>
+                <li>🥄 Gula larut dalam air</li>
+            </ul>
+
+        </div>
+
+
+        <div class="material-box kimia-box">
+
+            <h2>🟠 PERUBAHAN KIMIA</h2>
+
+            <p>
+                Perubahan kimia adalah perubahan materi yang
+                <strong>menghasilkan zat baru.</strong>
+            </p>
+
+            <br>
+
+            <strong>Contoh:</strong>
+
+            <ul>
+                <li>🔥 Kayu terbakar</li>
+                <li>🔩 Besi berkarat</li>
+                <li>🥚 Telur dimasak</li>
+                <li>🍎 Buah membusuk</li>
+                <li>🍞 Makanan menjadi basi</li>
+                <li>🔥 Kertas terbakar</li>
+            </ul>
+
+        </div>
+
+    </div>
+
+
+    <div class="card">
+
+        <h2>⚖️ INGAT RUMUSNYA!</h2>
+
+        <div style="
+            display:grid;
+            grid-template-columns:1fr 1fr;
+            gap:15px;
+            text-align:center;
+        ">
+
+            <div style="
+                padding:20px;
+                background:#e7f6ff;
+                border-radius:15px;
+            ">
+                <strong style="font-size:22px;">
+                    🔵 FISIKA
+                </strong>
+
+                <p style="margin-top:10px;">
+                    Tidak terbentuk zat baru.
+                </p>
+            </div>
+
+            <div style="
+                padding:20px;
+                background:#fff0df;
+                border-radius:15px;
+            ">
+                <strong style="font-size:22px;">
+                    🟠 KIMIA
+                </strong>
+
+                <p style="margin-top:10px;">
+                    Terbentuk zat baru.
+                </p>
+            </div>
+
+        </div>
+
+        <div class="center">
+
+            <button
+                class="btn btn-primary"
+                onclick="startGame()">
+                🎮 SAYA SIAP BERMAIN!
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     ARENA
+========================= -->
+
+<section id="arena" class="page">
+
+    <div class="card">
+
+        <div class="arena-header">
+
+            <h2>⚔️ PERTANDINGAN DIMULAI!</h2>
+
+            <div class="round">
+                RONDE <span id="roundNumber">1</span> / 10
+            </div>
+
+            <p>
+                Pemain:
+                <strong id="arenaName">Pemain</strong>
+            </p>
+
+        </div>
+
+
+        <!-- TEAM -->
+
+        <div class="team-names">
+
+            <div class="team team-fisika">
+                🔵 TIM PERUBAHAN FISIKA
+            </div>
+
+            <div class="team team-kimia">
+                🟠 TIM PERUBAHAN KIMIA
+            </div>
+
+        </div>
+
+
+        <!-- TARIK TAMBANG -->
+
+        <div class="tug-area">
+
+            <div class="players">
+
+                <div class="player-left">
+                    👨‍🔬 👩‍🔬
+                </div>
+
+                <div class="player-right">
+                    👨‍🔬 👩‍🔬
+                </div>
+
+            </div>
+
+            <div class="rope-wrapper">
+
+                <div class="win-line win-left"></div>
+
+                <div class="win-line win-right"></div>
+
+                <div
+                    id="flag"
+                    class="flag">
+                    🚩
+                </div>
+
+                <div
+                    id="rope"
+                    class="rope">
+                </div>
+
+            </div>
+
+            <div class="rope-label">
+
+                <span>🔵 FISIKA</span>
+
+                <span>🟠 KIMIA</span>
+
+            </div>
+
+        </div>
+
+
+        <!-- QUESTION -->
+
+        <div class="progress-bg">
+
+            <div
+                id="progressBar"
+                class="progress-bar">
+            </div>
+
+        </div>
+
+        <div id="questionArea"></div>
+
+        <div
+            id="feedback"
+            class="feedback">
+        </div>
+
+        <button
+            id="nextButton"
+            class="btn btn-primary next"
+            onclick="nextQuestion()">
+            LANJUT ➜
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     BONUS
+========================= -->
+
+<section id="bonus" class="page">
+
+    <div class="card">
+
+        <div class="bonus-title">
+            🔥 RONDE BONUS!
+        </div>
+
+        <p class="center">
+            Jawaban benar bernilai <strong>20 poin</strong>!
+        </p>
+
+        <br>
+
+        <div class="round center">
+            BONUS <span id="bonusNumber">1</span> / 5
+        </div>
+
+        <div class="progress-bg">
+
+            <div
+                id="bonusProgress"
+                class="progress-bar">
+            </div>
+
+        </div>
+
+        <div id="bonusQuestion"></div>
+
+        <div
+            id="bonusFeedback"
+            class="feedback">
+        </div>
+
+        <button
+            id="bonusNext"
+            class="btn btn-orange next"
+            onclick="nextBonus()">
+            LANJUT ➜
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     HASIL
+========================= -->
+
+<section id="result" class="page">
+
+    <div class="card result">
+
+        <div class="trophy">
+            🏆
+        </div>
+
+        <h1>
+            PERTANDINGAN SELESAI!
+        </h1>
+
+        <p id="resultName">
+            Pemain
+        </p>
+
+        <div class="final-score">
+            <span id="finalScore">0</span>
+        </div>
+
+        <p>
+            TOTAL SKOR
+        </p>
+
+        <div
+            id="winnerBox"
+            class="winner">
+        </div>
+
+        <div class="result-grid">
+
+            <div class="result-box">
+                <strong id="resultCorrect">0</strong>
+                Benar
+            </div>
+
+            <div class="result-box">
+                <strong id="resultWrong">0</strong>
+                Salah
+            </div>
+
+            <div class="result-box">
+                <strong id="resultPercent">0%</strong>
+                Persentase
+            </div>
+
+        </div>
+
+        <p id="resultMessage"
+           style="line-height:1.6;">
+        </p>
+
+        <br>
+
+        <button
+            class="btn btn-primary"
+            onclick="restartGame()">
+            🔄 MAIN LAGI
+        </button>
+
+        <button
+            class="btn btn-light"
+            onclick="showPage('material')">
+            📖 PELAJARI LAGI
+        </button>
+
+        <button
+            class="btn btn-green"
+            onclick="showPage('home')">
+            🏠 BERANDA
+        </button>
+
+    </div>
+
+</section>
+
+</main>
+
+
+<!-- POPUP FEEDBACK -->
+
+<div
+    id="popup"
+    class="feedback-pop">
+
+    <div
+        id="popupIcon"
+        class="pop-icon">
+        🎉
+    </div>
+
+    <h2 id="popupTitle">
+        BENAR!
+    </h2>
+
+    <p
+        id="popupText"
+        style="margin-top:10px;line-height:1.5;">
+    </p>
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   DATA GAME
+===================================================== */
+
+const questions = [
+
+{
+    question:
+    "Es batu yang dibiarkan di tempat terbuka kemudian berubah menjadi air. Peristiwa tersebut merupakan...",
+
+    options:[
+        "Perubahan fisika",
+        "Perubahan kimia",
+        "Pembakaran",
+        "Pembusukan"
+    ],
+
+    answer:0,
+
+    team:"fisika",
+
+    explanation:
+    "Es hanya mengalami perubahan wujud dari padat menjadi cair dan tidak menghasilkan zat baru."
+},
+
+{
+    question:
+    "Besi yang terkena air dan udara dalam waktu lama dapat berubah menjadi karat. Peristiwa tersebut merupakan...",
+
+    options:[
+        "Perubahan ukuran",
+        "Perubahan fisika",
+        "Perubahan kimia",
+        "Perubahan wujud"
+    ],
+
+    answer:2,
+
+    team:"kimia",
+
+    explanation:
+    "Perkaratan menghasilkan zat baru berupa karat sehingga termasuk perubahan kimia."
+},
+
+{
+    question:
+    "Kertas dipotong menjadi beberapa bagian kecil. Perubahan tersebut termasuk...",
+
+    options:[
+        "Perubahan kimia",
+        "Perubahan fisika",
+        "Pembakaran",
+        "Pembusukan"
+    ],
+
+    answer:1,
+
+    team:"fisika",
+
+    explanation:
+    "Kertas hanya berubah ukuran dan bentuk. Tidak terbentuk zat baru."
+},
+
+{
+    question:
+    "Kayu yang dibakar hingga menghasilkan abu merupakan contoh...",
+
+    options:[
+        "Perubahan fisika",
+        "Perubahan wujud",
+        "Perubahan kimia",
+        "Pelarutan"
+    ],
+
+    answer:2,
+
+    team:"kimia",
+
+    explanation:
+    "Pembakaran menghasilkan zat baru, termasuk abu dan berbagai gas."
+},
+
+{
+    question:
+    "Air yang dipanaskan hingga berubah menjadi uap mengalami...",
+
+    options:[
+        "Perubahan kimia",
+        "Perubahan fisika",
+        "Pembusukan",
+        "Perkaratan"
+    ],
+
+    answer:1,
+
+    team:"fisika",
+
+    explanation:
+    "Air hanya mengalami perubahan wujud dari cair menjadi gas."
+},
+
+{
+    question:
+    "Telur mentah yang digoreng hingga matang mengalami...",
+
+    options:[
+        "Perubahan fisika",
+        "Perubahan kimia",
+        "Perubahan ukuran saja",
+        "Perubahan tempat"
+    ],
+
+    answer:1,
+
+    team:"kimia",
+
+    explanation:
+    "Proses pemasakan menyebabkan perubahan sifat pada zat penyusun telur dan bersifat kimia."
+},
+
+{
+    question:
+    "Gula yang dilarutkan ke dalam air merupakan contoh...",
+
+    options:[
+        "Perubahan kimia",
+        "Perubahan fisika",
+        "Pembakaran",
+        "Pembusukan"
+    ],
+
+    answer:1,
+
+    team:"fisika",
+
+    explanation:
+    "Pelarutan gula tidak menghasilkan zat baru sehingga termasuk perubahan fisika."
+},
+
+{
+    question:
+    "Buah yang dibiarkan terlalu lama kemudian membusuk mengalami...",
+
+    options:[
+        "Perubahan fisika",
+        "Perubahan kimia",
+        "Perubahan bentuk saja",
+        "Perubahan ukuran saja"
+    ],
+
+    answer:1,
+
+    team:"kimia",
+
+    explanation:
+    "Pembusukan menyebabkan terbentuknya berbagai zat baru dan perubahan sifat buah."
+},
+
+{
+    question:
+    "Lilin yang dipanaskan kemudian meleleh termasuk...",
+
+    options:[
+        "Perubahan kimia",
+        "Perubahan fisika",
+        "Pembusukan",
+        "Perkaratan"
+    ],
+
+    answer:1,
+
+    team:"fisika",
+
+    explanation:
+    "Lilin mengalami perubahan wujud akibat pemanasan tanpa menghasilkan zat baru."
+},
+
+{
+    question:
+    "Makanan yang menjadi basi merupakan contoh...",
+
+    options:[
+        "Perubahan fisika",
+        "Perubahan kimia",
+        "Perubahan wujud",
+        "Perubahan ukuran"
+    ],
+
+    answer:1,
+
+    team:"kimia",
+
+    explanation:
+    "Makanan basi mengalami perubahan komposisi dan menghasilkan zat baru."
+}
+
+];
+
+
+/* =====================================================
+   BONUS QUESTIONS
+===================================================== */
+
+const bonusQuestions = [
+
+{
+    question:
+    "Dina mencampurkan cuka dengan soda kue. Setelah dicampurkan muncul banyak gelembung gas. Fenomena tersebut menunjukkan...",
+
+    options:[
+        "Perubahan fisika",
+        "Perubahan kimia",
+        "Perubahan bentuk",
+        "Perubahan ukuran"
+    ],
+
+    answer:1,
+
+    team:"kimia",
+
+    explanation:
+    "Munculnya gas merupakan salah satu tanda terjadinya reaksi kimia."
+},
+
+{
+    question:
+    "Perhatikan peristiwa berikut: air membeku, kertas dipotong, dan gula larut dalam air. Ketiga peristiwa tersebut termasuk...",
+
+    options:[
+        "Perubahan kimia",
+        "Perubahan fisika",
+        "Pembakaran",
+        "Pembusukan"
+    ],
+
+    answer:1,
+
+    team:"fisika",
+
+    explanation:
+    "Ketiga peristiwa tersebut tidak menghasilkan zat baru."
+},
+
+{
+    question:
+    "Salah satu tanda yang dapat menunjukkan terjadinya perubahan kimia adalah...",
+
+    options:[
+        "Benda berpindah tempat",
+        "Terbentuk gas",
+        "Benda menjadi lebih dekat",
+        "Ukuran benda tetap"
+    ],
+
+    answer:1,
+
+    team:"kimia",
+
+    explanation:
+    "Terbentuknya gas dapat menjadi salah satu tanda berlangsungnya reaksi kimia."
+},
+
+{
+    question:
+    "Manakah peristiwa berikut yang paling tepat menunjukkan terbentuknya zat baru?",
+
+    options:[
+        "Es mencair",
+        "Air menguap",
+        "Besi berkarat",
+        "Kertas dipotong"
+    ],
+
+    answer:2,
+
+    team:"kimia",
+
+    explanation:
+    "Besi berkarat menghasilkan zat baru berupa karat."
+},
+
+{
+    question:
+    "Roti yang dipanggang berubah warna, aroma, dan rasa. Peristiwa tersebut terutama termasuk...",
+
+    options:[
+        "Perubahan fisika",
+        "Perubahan kimia",
+        "Perubahan tempat",
+        "Perubahan ukuran"
+    ],
+
+    answer:1,
+
+    team:"kimia",
+
+    explanation:
+    "Pemanggangan menyebabkan perubahan sifat dan komposisi zat sehingga termasuk perubahan kimia."
+}
+
+];
+
+
+/* =====================================================
+   GAME STATE
+===================================================== */
+
+let score = 0;
+
+let correct = 0;
+
+let wrong = 0;
+
+let questionIndex = 0;
+
+let bonusIndex = 0;
+
+let ropePosition = 0;
+
+
+/*
+   ropePosition:
+   -10 sampai +10
+
+   negatif = Fisika
+   positif = Kimia
+*/
+
+const maxPosition = 10;
+
+
+/* =====================================================
+   NAVIGATION
+===================================================== */
+
+function showPage(id){
+
+    document.querySelectorAll(".page")
+    .forEach(page=>{
+        page.classList.remove("active");
+    });
+
+    const target = document.getElementById(id);
+
+    if(target){
+        target.classList.add("active");
+    }
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+}
+
+
+/* =====================================================
+   START
+===================================================== */
+
+function startGame(){
+
+    score = 0;
+    correct = 0;
+    wrong = 0;
+
+    questionIndex = 0;
+    bonusIndex = 0;
+
+    ropePosition = 0;
+
+    updateScore();
+
+    const name =
+        document.getElementById("playerName")
+        .value.trim();
+
+    document.getElementById("arenaName")
+        .textContent =
+        name || "Pemain";
+
+    showPage("arena");
+
+    loadQuestion();
+}
+
+
+function startArena(){
+
+    startGame();
+}
+
+
+/* =====================================================
+   SCORE
+===================================================== */
+
+function updateScore(){
+
+    document.getElementById("topScore")
+        .textContent = score;
+}
+
+
+function addScore(points){
+
+    score += points;
+
+    updateScore();
+}
+
+
+/* =====================================================
+   LOAD MAIN QUESTION
+===================================================== */
+
+function loadQuestion(){
+
+    const data =
+        questions[questionIndex];
+
+    document.getElementById("roundNumber")
+        .textContent =
+        questionIndex + 1;
+
+    const progress =
+        ((questionIndex) / questions.length) * 100;
+
+    document.getElementById("progressBar")
+        .style.width =
+        progress + "%";
+
+    let html = `
+
+        <div class="question">
+            ${data.question}
+        </div>
+
+    `;
+
+    data.options.forEach((option,index)=>{
+
+        html += `
+
+            <button
+                class="option"
+                onclick="answerQuestion(${index},this)">
+
+                ${String.fromCharCode(65+index)}.
+                ${option}
+
+            </button>
+
+        `;
+
+    });
+
+    document.getElementById("questionArea")
+        .innerHTML = html;
+
+    document.getElementById("feedback")
+        .className = "feedback";
+
+    document.getElementById("nextButton")
+        .style.display = "none";
+}
+
+
+/* =====================================================
+   ANSWER MAIN QUESTION
+===================================================== */
+
+function answerQuestion(choice,button){
+
+    const data =
+        questions[questionIndex];
+
+    const options =
+        document.querySelectorAll(
+            "#questionArea .option"
+        );
+
+    options.forEach(btn=>{
+        btn.disabled = true;
+    });
+
+    const feedback =
+        document.getElementById("feedback");
+
+    if(choice === data.answer){
+
+        button.classList.add("correct");
+
+        addScore(10);
+
+        correct++;
+
+        moveRope(data.team,1);
+
+        feedback.className =
+            "feedback show good";
+
+        feedback.innerHTML =
+            "🎉 <strong>BENAR!</strong><br>" +
+            data.explanation;
+
+        showPopup(
+            "🎉",
+            "JAWABAN BENAR!",
+            "+10 poin • Tali bergerak!"
+        );
+
+    }else{
+
+        button.classList.add("wrong");
+
+        options[data.answer]
+            .classList.add("correct");
+
+        wrong++;
+
+        feedback.className =
+            "feedback show bad";
+
+        feedback.innerHTML =
+            "💡 <strong>Belum tepat.</strong><br>" +
+            data.explanation;
+
+        showPopup(
+            "💡",
+            "BELUM TEPAT",
+            "Tali tidak bergerak."
+        );
+
+    }
+
+    document.getElementById("nextButton")
+        .style.display = "inline-block";
+}
+
+
+/* =====================================================
+   NEXT MAIN QUESTION
+===================================================== */
+
+function nextQuestion(){
+
+    questionIndex++;
+
+    if(questionIndex < questions.length){
+
+        loadQuestion();
+
+    }else{
+
+        startBonus();
+    }
+}
+
+
+/* =====================================================
+   ROPE MOVEMENT
+===================================================== */
+
+function moveRope(team,steps){
+
+    if(team === "fisika"){
+
+        ropePosition -= steps;
+
+    }else{
+
+        ropePosition += steps;
+
+    }
+
+    if(ropePosition > maxPosition){
+
+        ropePosition = maxPosition;
+
+    }
+
+    if(ropePosition < -maxPosition){
+
+        ropePosition = -maxPosition;
+
+    }
+
+    updateRope();
+}
+
+
+/* =====================================================
+   UPDATE ROPE VISUAL
+===================================================== */
+
+function updateRope(){
+
+    /*
+       Posisi bendera:
+       -10 = kiri
+        0  = tengah
+       +10 = kanan
+    */
+
+    const percent =
+        50 + (ropePosition / maxPosition) * 40;
+
+    document.getElementById("flag")
+        .style.left =
+        percent + "%";
+
+    /*
+       Tali bergerak sedikit berlawanan
+       dengan arah bendera untuk membuat
+       efek tarik tambang.
+    */
+
+    const ropeMove =
+        (ropePosition / maxPosition) * 10;
+
+    document.getElementById("rope")
+        .style.transform =
+        `translateX(${ropeMove}px)`;
+}
+
+
+/* =====================================================
+   BONUS
+===================================================== */
+
+function startBonus(){
+
+    bonusIndex = 0;
+
+    showPage("bonus");
+
+    loadBonus();
+}
+
+
+function loadBonus(){
+
+    const data =
+        bonusQuestions[bonusIndex];
+
+    document.getElementById("bonusNumber")
+        .textContent =
+        bonusIndex + 1;
+
+    const progress =
+        ((bonusIndex) /
+        bonusQuestions.length) * 100;
+
+    document.getElementById("bonusProgress")
+        .style.width =
+        progress + "%";
+
+    let html = `
+
+        <div class="question">
+            ${data.question}
+        </div>
+
+    `;
+
+    data.options.forEach((option,index)=>{
+
+        html += `
+
+            <button
+                class="option"
+                onclick="answerBonus(${index},this)">
+
+                ${String.fromCharCode(65+index)}.
+                ${option}
+
+            </button>
+
+        `;
+
+    });
+
+    document.getElementById("bonusQuestion")
+        .innerHTML = html;
+
+    document.getElementById("bonusFeedback")
+        .className = "feedback";
+
+    document.getElementById("bonusNext")
+        .style.display = "none";
+}
+
+
+/* =====================================================
+   ANSWER BONUS
+===================================================== */
+
+function answerBonus(choice,button){
+
+    const data =
+        bonusQuestions[bonusIndex];
+
+    const options =
+        document.querySelectorAll(
+            "#bonusQuestion .option"
+        );
+
+    options.forEach(btn=>{
+        btn.disabled = true;
+    });
+
+    const feedback =
+        document.getElementById("bonusFeedback");
+
+    if(choice === data.answer){
+
+        button.classList.add("correct");
+
+        addScore(20);
+
+        correct++;
+
+        moveRope(data.team,2);
+
+        feedback.className =
+            "feedback show good";
+
+        feedback.innerHTML =
+            "🔥 <strong>BENAR!</strong><br>" +
+            data.explanation;
+
+        showPopup(
+            "🔥",
+            "BONUS BERHASIL!",
+            "+20 poin • Tali bergerak 2 langkah!"
+        );
+
+    }else{
+
+        button.classList.add("wrong");
+
+        options[data.answer]
+            .classList.add("correct");
+
+        wrong++;
+
+        feedback.className =
+            "feedback show bad";
+
+        feedback.innerHTML =
+            "💡 <strong>Belum tepat.</strong><br>" +
+            data.explanation;
+
+        showPopup(
+            "💡",
+            "BELUM TEPAT",
+            "Tali tidak bergerak."
+        );
+    }
+
+    document.getElementById("bonusNext")
+        .style.display = "inline-block";
+}
+
+
+/* =====================================================
+   NEXT BONUS
+===================================================== */
+
+function nextBonus(){
+
+    bonusIndex++;
+
+    if(bonusIndex < bonusQuestions.length){
+
+        loadBonus();
+
+    }else{
+
+        showResult();
+    }
+}
+
+
+/* =====================================================
+   RESULT
+===================================================== */
+
+function showResult(){
+
+    showPage("result");
+
+    const name =
+        document.getElementById("playerName")
+        .value.trim();
+
+    document.getElementById("resultName")
+        .innerHTML =
+        name
+        ? "Hebat, <strong>" +
+          escapeHTML(name) +
+          "</strong>!"
+        : "Hebat, Detektif Materi!";
+
+    document.getElementById("finalScore")
+        .textContent = score;
+
+    document.getElementById("resultCorrect")
+        .textContent = correct;
+
+    document.getElementById("resultWrong")
+        .textContent = wrong;
+
+    const total =
+        correct + wrong;
+
+    const percentage =
+        total > 0
+        ? Math.round((correct / total) * 100)
+        : 0;
+
+    document.getElementById("resultPercent")
+        .textContent =
+        percentage + "%";
+
+
+    /* PEMENANG TARIK TAMBANG */
+
+    const winnerBox =
+        document.getElementById("winnerBox");
+
+    if(ropePosition < 0){
+
+        winnerBox.className =
+            "winner winner-fisika";
+
+        winnerBox.innerHTML =
+            "🎉 🔵 TIM PERUBAHAN FISIKA MENANG!";
+
+    }else if(ropePosition > 0){
+
+        winnerBox.className =
+            "winner winner-kimia";
+
+        winnerBox.innerHTML =
+            "🎉 🟠 TIM PERUBAHAN KIMIA MENANG!";
+
+    }else{
+
+        winnerBox.className =
+            "winner winner-draw";
+
+        winnerBox.innerHTML =
+            "🤝 HASIL PERTANDINGAN IMBANG!";
+
+    }
+
+
+    let message = "";
+
+    if(percentage >= 90){
+
+        message =
+        "🏆 Luar biasa! Kamu sangat memahami perubahan fisika dan perubahan kimia.";
+
+    }else if(percentage >= 75){
+
+        message =
+        "🥇 Bagus sekali! Pemahamanmu tentang perubahan materi sudah sangat baik.";
+
+    }else if(percentage >= 60){
+
+        message =
+        "🥈 Cukup baik! Pelajari kembali ciri-ciri perubahan fisika dan kimia.";
+
+    }else{
+
+        message =
+        "🔬 Jangan menyerah! Pelajari kembali materi kemudian coba permainan lagi.";
+
+    }
+
+    document.getElementById("resultMessage")
+        .textContent = message;
+}
+
+
+/* =====================================================
+   RESTART
+===================================================== */
+
+function restartGame(){
+
+    startGame();
+}
+
+
+/* =====================================================
+   POPUP
+===================================================== */
+
+let popupTimer;
+
+function showPopup(icon,title,text){
+
+    const popup =
+        document.getElementById("popup");
+
+    document.getElementById("popupIcon")
+        .textContent = icon;
+
+    document.getElementById("popupTitle")
+        .textContent = title;
+
+    document.getElementById("popupText")
+        .textContent = text;
+
+    popup.classList.add("show");
+
+    clearTimeout(popupTimer);
+
+    popupTimer =
+        setTimeout(()=>{
+            popup.classList.remove("show");
+        },1000);
+}
+
+
+/* =====================================================
+   ESCAPE HTML
+===================================================== */
+
+function escapeHTML(str){
+
+    return str.replace(/[&<>"']/g,function(char){
+
+        const map = {
+            "&":"&amp;",
+            "<":"&lt;",
+            ">":"&gt;",
+            '"':"&quot;",
+            "'":"&#039;"
+        };
+
+        return map[char];
+    });
+}
+
+
+/* =====================================================
+   INITIALIZATION
+===================================================== */
+
+document.getElementById("playerName")
+.addEventListener("input",function(){
+
+    if(this.value.length > 30){
+
+        this.value =
+        this.value.substring(0,30);
+
+    }
+
+});
+
+
+showPage("home");
+
+updateScore();
+
+</script>
+
+</body>
+</html>
